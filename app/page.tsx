@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs'
 
 export default function page() {
   const { userId } = auth()
-  const href = userId ? '/journal' : '/new-u ser'
+  const href = userId ? '/journal' : '/new-user'
   return (
     <div className="w-screen h-screen bg-black flex justify-center items-center text-white">
       <div className="w-full max-w-[600px] mx-auto">
