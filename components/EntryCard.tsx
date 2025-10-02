@@ -1,19 +1,38 @@
 import React from 'react'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from './ui/card'
+import dayjs from 'dayjs'
+import { Badge } from './ui/badge'
 
 export default function EntryCard(props: { entry: any }) {
   const { entry } = props
-  const date = new Date(entry.createdAt).toDateString()
-
+  const date = dayjs(entry.createdAt).format('DD/MM/YYYY HH:mm')
   return (
-    <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
-      <div className="px-4 py-5 sm:px-6">{date}</div>
-      <div className="px-4 py-5 sm:p-6">{entry.analysis?.summary ?? ''}</div>
-      <div
-        className="px-4 py-4 sm:px-6"
-        style={{ backgroundColor: entry.analysis?.color }}
-      >
-        {entry.analysis?.mood ?? ''}
+    <Card
+      className="min-h-[250px] flex items-center flex-col pt-3 rounded-3xl dark:color-white"
+      style={{ backgroundColor: entry.analysis?.color }}
+    >
+      <div className="w-[95%] bg-white dark:bg-[#131621] rounded-3xl min-h-[175px]">
+        <CardHeader className="rounded-t-3xl">
+          <CardTitle>
+            <p className="leading-7 [&:not(:first-child)]:mt-6">{date}</p>
+          </CardTitle>
+          <CardDescription></CardDescription>
+        </CardHeader>
+        <CardContent className="max-h-[100px] overflow-auto">
+          {entry.analysis?.summary ?? ''}
+        </CardContent>
       </div>
-    </div>
+      <div className="flex-1 w-full flex items-center justify-center">
+        <Badge variant="secondary">
+          {entry.analysis?.mood.toUpperCase() ?? ''}
+        </Badge>
+      </div>
+    </Card>
   )
 }

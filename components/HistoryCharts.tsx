@@ -1,5 +1,12 @@
 'use client'
-import { ResponsiveContainer, LineChart, Line, XAxis, Tooltip } from 'recharts'
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  Tooltip,
+  YAxis,
+} from 'recharts'
 
 const CustomTooltip = ({ payload, label, active }) => {
   const dateLabel = new Date(label).toLocaleString('en-us', {
@@ -19,7 +26,6 @@ const CustomTooltip = ({ payload, label, active }) => {
           className="absolute left-2 top-2 w-2 h-2 rounded-full"
           style={{ background: analysis.color }}
         ></div>
-        <p className="label text-sm text-black/30">{dateLabel}</p>
         <p className="intro text-xl uppercase">{analysis.mood}</p>
       </div>
     )
@@ -30,7 +36,7 @@ const CustomTooltip = ({ payload, label, active }) => {
 
 const HistoryChart = ({ data }) => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height="93%">
       <LineChart width={300} height={100} data={data}>
         <Line
           type="monotone"
@@ -39,8 +45,9 @@ const HistoryChart = ({ data }) => {
           strokeWidth={2}
           activeDot={{ r: 8 }}
         />
-        <XAxis dataKey="createdAt" />
         <Tooltip content={<CustomTooltip />} />
+        <XAxis />
+        <YAxis />
       </LineChart>
     </ResponsiveContainer>
   )

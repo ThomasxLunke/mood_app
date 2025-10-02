@@ -14,11 +14,11 @@ export default function NewEntryCard() {
 
   return (
     <div
-      className="cursor-pointer overflow-hidden rounded-lg bg-white shadow"
+      className="cursor-pointer rounded-3xl overflow-hidden dark:bg-[#131621] dark:border-[#030712] dark:border bg-white shadow"
       onClick={handleOnClick}
     >
       <div className="px-4 py-5 sm:p-6">
-        <span className="text-3xl">New Entry</span>
+        <span className="text-3xl">+ Nouvelle entrée</span>
       </div>
     </div>
   )
