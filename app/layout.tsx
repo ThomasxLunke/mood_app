@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: "MoodJournal — Journal intelligent propulsé par l'IA",
+  title: "Mood-AI — Journal intelligent propulsé par l'IA",
   description:
     "Journal intelligent qui analyse chaque entrée grâce à l'IA : résumé, note et couleur d'humeur générés automatiquement. Visualisez vos tendances émotionnelles et interrogez votre journal par IA.",
 }

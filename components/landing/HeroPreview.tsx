@@ -37,7 +37,8 @@ export function HeroPreview() {
         cardDistance={36}
         verticalDistance={32}
         delay={4500}
-        pauseOnHover
+        // pauseOnHover — désactivé volontairement : le carrousel doit
+        // tourner en continu, sans que le survol puisse l'arrêter.
         skewAmount={4}
         easing="elastic"
       >

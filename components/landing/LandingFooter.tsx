@@ -4,7 +4,7 @@ export function LandingFooter() {
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-muted-foreground sm:flex-row">
         <p>Ce projet fait partie de mon portfolio.</p>
         <a
-          href="https://portfolio-tau-roan.vercel.app/"
+          href="https://portfolio-tau-roan.vercel.app/#projects"
           target="_blank"
           rel="noopener noreferrer"
           className="underline underline-offset-4 hover:text-foreground"
