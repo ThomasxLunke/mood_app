@@ -80,7 +80,7 @@ export function LandingHeader({ authSlot }: { authSlot: ReactNode }) {
             aria-hidden
             className="h-6 w-6 rounded-md bg-gradient-to-br from-chart-1 via-chart-2 to-chart-4"
           />
-          MoodJournal
+          Mood-AI
         </a>
 
         {/* Pure scroll indicator — not clickable, only reflects scroll position. */}
