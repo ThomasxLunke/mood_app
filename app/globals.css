@@ -82,3 +82,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide Clerk's "Secured by Clerk" free-tier badge. There is no supported
+   `elements` key for it (checked @clerk/types) — Clerk only lets you
+   remove it via a paid plan. These are its actual internal CSS-module
+   class names (hashed, not part of Clerk's stable public API), so this
+   is inherently fragile: a future @clerk/nextjs upgrade can change the
+   hash and make the badge reappear silently. If that happens, inspect
+   the rendered <SignIn>/<SignUp> card for the new `cl-internal-*` class
+   on the "Secured by Clerk" text and swap it in below. */
+.cl-internal-b3fm6y,
+.cl-internal-11lqcp9 {
+  display: none !important;
+}

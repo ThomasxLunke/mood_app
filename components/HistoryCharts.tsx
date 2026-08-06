@@ -21,12 +21,17 @@ const CustomTooltip = ({ payload, label, active }) => {
   if (active) {
     const analysis = payload[0].payload
     return (
-      <div className="p-8 custom-tooltip bg-white/5 shadow-md border border-black/10 rounded-lg backdrop-blur-md relative">
-        <div
-          className="absolute left-2 top-2 w-2 h-2 rounded-full"
-          style={{ background: analysis.color }}
-        ></div>
-        <p className="intro text-xl uppercase">{analysis.mood}</p>
+      <div className="custom-tooltip relative rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-md backdrop-blur-md">
+        <div className="mb-1.5 flex items-center gap-2">
+          <span
+            className="h-2 w-2 rounded-full"
+            style={{ background: analysis.color }}
+          />
+          <p className="text-sm font-semibold uppercase tracking-wide">
+            {analysis.mood}
+          </p>
+        </div>
+        <p className="text-xs text-muted-foreground">{dateLabel}</p>
       </div>
     )
   }
@@ -41,7 +46,7 @@ const HistoryChart = ({ data }) => {
         <Line
           type="monotone"
           dataKey="sentimentScore"
-          stroke="#8884d8"
+          stroke="hsl(var(--primary))"
           strokeWidth={2}
           activeDot={{ r: 8 }}
         />
