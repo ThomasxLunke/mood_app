@@ -1,10 +1,12 @@
-import React from 'react'
 import { SignUp } from '@clerk/nextjs'
+import { AuthShell } from '@/components/auth/AuthShell'
 
+// Theming comes from ClerkProviderWithTheme at the root — nothing to
+// compute here.
 export default function SignupPage() {
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <AuthShell>
       <SignUp afterSignUpUrl="/new-user" redirectUrl="/new-user" />
-    </div>
+    </AuthShell>
   )
 }

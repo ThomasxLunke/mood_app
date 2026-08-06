@@ -3,8 +3,13 @@
 import { createNewEntry } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { Plus } from 'lucide-react'
+import { Button } from './ui/button'
 import { Spinner } from './ui/spinner'
 
+// Same create/redirect logic as before — timeline layout (Option C) moves
+// this out of the entry grid into the page toolbar, so it's now a Button
+// instead of a card tile.
 export default function NewEntryCard() {
   const router = useRouter()
   const [isCreating, setIsCreating] = useState(false)
@@ -26,23 +31,9 @@ export default function NewEntryCard() {
   }
 
   return (
-    <div
-      aria-disabled={isCreating}
-      className={`rounded-3xl overflow-hidden dark:bg-[#131621] dark:border-[#030712] dark:border bg-white shadow ${
-        isCreating ? 'cursor-wait opacity-70' : 'cursor-pointer'
-      }`}
-      onClick={handleOnClick}
-    >
-      <div className="px-4 py-5 sm:p-6 flex items-center gap-3">
-        {isCreating ? (
-          <>
-            <Spinner />
-            <span className="text-3xl">Création...</span>
-          </>
-        ) : (
-          <span className="text-3xl">+ Nouvelle entrée</span>
-        )}
-      </div>
-    </div>
+    <Button onClick={handleOnClick} disabled={isCreating} className="gap-2">
+      {isCreating ? <Spinner /> : <Plus className="h-4 w-4" />}
+      {isCreating ? 'Création...' : 'Nouvelle entrée'}
+    </Button>
   )
 }

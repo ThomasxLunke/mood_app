@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { frFR } from '@clerk/localizations'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { clerkAppearance } from '@/components/auth/clerkAppearance'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +19,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider localization={frFR}>
+    // ClerkProvider used directly here (Server Component), not wrapped in
+    // a client component — wrapping it broke Next's SSR hydration for its
+    // children (see clerkAppearance.ts for why theming doesn't need that
+    // wrapper anyway).
+    <ClerkProvider localization={frFR} appearance={clerkAppearance}>
       <html lang="fr" suppressHydrationWarning>
         <body className={inter.className}>
           <ThemeProvider

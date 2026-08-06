@@ -1,6 +1,7 @@
 import Editor from '@/components/Editor'
 import { getUserByClerkID } from '@/utils/auth'
 import { prisma } from '@/utils/db'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 const getEntry = async (id: string) => {
@@ -24,9 +25,9 @@ export default async function EntryPage(props: { params }) {
   const { params } = props
   const entry = await getEntry(params.id)
 
-  return (
-    <div className="w-full h-full">
-      <Editor entry={entry} />
-    </div>
-  )
+  // Wrong id, or another user's entry: 404 instead of crashing on
+  // entry.content/entry.analysis below.
+  if (!entry) notFound()
+
+  return <Editor entry={entry} />
 }

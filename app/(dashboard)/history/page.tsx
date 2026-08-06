@@ -1,4 +1,6 @@
 import HistoryChart from '@/components/HistoryCharts'
+import { PageShell } from '@/components/dashboard/PageShell'
+import { Card } from '@/components/ui/card'
 import { getUserByClerkID } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 
@@ -15,27 +17,30 @@ const getData = async () => {
   const total = analyses.reduce((acc, curr) => {
     return acc + curr.sentimentScore
   }, 0)
-  const average = total / analyses.length
+  const average = analyses.length > 0 ? total / analyses.length : 0
   return { analyses, average }
 }
 
 const HistoryPage = async () => {
   const { analyses, average } = await getData()
   return (
-    <div className="p-10 bg-zinc-400/10 h-full">
-      <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
-        Historique
-      </h1>
-      <div>
-        <h1 className="text-2xl mb-4">{`Moyenne du mood : ${average.toFixed(
-          1
-        )} / 10`}</h1>
-      </div>
+    <PageShell title="Historique">
+      <Card className="mb-6 inline-flex flex-col gap-1 px-5 py-4">
+        <span className="text-xs font-medium text-muted-foreground">
+          Moyenne du mood
+        </span>
+        <span className="text-3xl font-semibold tracking-tight">
+          {average.toFixed(1)}{' '}
+          <span className="text-base font-normal text-muted-foreground">
+            / 10
+          </span>
+        </span>
+      </Card>
 
-      <div className="h-[93%] w-full">
+      <div className="h-[420px] w-full">
         <HistoryChart data={analyses} />
       </div>
-    </div>
+    </PageShell>
   )
 }
 

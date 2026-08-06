@@ -37,7 +37,7 @@ export function AuthCta({
             <Link href={signedInHref}>{signedInLabel}</Link>
           </Button>
         ) : (
-          <UserButton />
+          <UserButton afterSignOutUrl="/" />
         )}
       </SignedIn>
     </>

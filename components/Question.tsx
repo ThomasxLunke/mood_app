@@ -28,21 +28,27 @@ export default function Question() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-4 rounded-xl p-4 border bg-card text-card-foreground shadow">
-        <div className="flex gap-3">
+      <div className="flex flex-col gap-3 rounded-lg border bg-card p-3">
+        <div className="flex gap-2">
           <Input
             disabled={loading}
             onChange={onChange}
             value={value}
             type="text"
             placeholder="Posez une question au journal entier..."
+            className="border-0 bg-transparent shadow-none focus-visible:ring-1"
           />
-          <Button disabled={loading} type="submit">
-            {loading ? <Spinner /> : <Search />}
+          <Button
+            disabled={loading}
+            type="submit"
+            variant="secondary"
+            size="icon"
+          >
+            {loading ? <Spinner /> : <Search className="h-4 w-4" />}
           </Button>
         </div>
         {response && (
-          <div className="rounded-xl p-4 border bg-card text-card-foreground shadow">
+          <div className="rounded-md border bg-muted/40 p-3 text-sm text-muted-foreground">
             {response}
           </div>
         )}
