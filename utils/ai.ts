@@ -1,5 +1,5 @@
 import { PromptTemplate } from 'langchain/prompts'
-import { OpenAI } from 'langchain/llms/openai'
+import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { StructuredOutputParser } from 'langchain/output_parsers'
 import z from 'zod'
 import { Document } from 'langchain/document'
@@ -12,7 +12,7 @@ const parser = StructuredOutputParser.fromZodSchema(
     sentimentScore: z
       .number()
       .describe(
-        'sentiment of the text and rated on a scale from -10 to 10 where, -10 is extremely negative, 0 is neutral, and 10 is extremely positive'
+        'sentiment of the text and rated on a scale from -10 to 10 where, -10 is extremely negative, 0 is neutral, and 10 is extremely positive',
       ),
     mood: z
       .string()
@@ -22,14 +22,14 @@ const parser = StructuredOutputParser.fromZodSchema(
     negative: z
       .boolean()
       .describe(
-        'is the journal entry negative ? (i.e does it contain negative emotions?).'
+        'is the journal entry negative ? (i.e does it contain negative emotions?).',
       ),
     color: z
       .string()
       .describe(
-        'a hexidecimal color code that represents the mood of the entry. Example #0101fe for blue representing happiness.'
+        'a hexidecimal color code that represents the mood of the entry. Example #0101fe for blue representing happiness.',
       ),
-  })
+  }),
 )
 
 const getPrompt = async (content: string) => {
@@ -51,22 +51,30 @@ const getPrompt = async (content: string) => {
 
 export const analyze = async (content: string) => {
   const input = await getPrompt(content)
-  const model = new OpenAI({
+  const model = new ChatOpenAI({
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
   })
   // apiKey: process.env.OPENAI_API_KEY,
 
-  const result = await model.call(input)
+  const result = await model.predict(input)
 
   try {
     return parser.parse(result)
   } catch (error) {
-    console.log(error)
+    console.error('Failed to parse AI analysis response:', error)
+    throw error
   }
 }
 
-export const qa = async (question, entries) => {
+export const qa = async (
+  question: string,
+  entries: {
+    id: string
+    content: string
+    createdAt: Date
+  }[],
+) => {
   const docs = entries.map((entry) => {
     return new Document({
       pageContent: entry.content,
@@ -77,7 +85,7 @@ export const qa = async (question, entries) => {
     })
   })
 
-  const model = new OpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' })
+  const model = new ChatOpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' })
   const chain = loadQARefineChain(model)
   const embeddings = new OpenAIEmbeddings()
   const store = await MemoryVectorStore.fromDocuments(docs, embeddings)

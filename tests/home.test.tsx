@@ -2,27 +2,27 @@ import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import Page from '../app/page'
 
-vi.mock('@clerk/nextjs', () => {
-  // Create an mockedFunctions object to match the functions we are importing from the @nextjs/clerk package in the ClerkComponent component.
-  const mockedFunctions = {
-    auth: () =>
-      new Promise((resolve) =>
-        resolve({ userId: 'user_2NNEqL2nrIRdJ194ndJqAHwEfxC' })
-      ),
-    ClerkProvider: ({ children }) => <div>{children}</div>,
-    useUser: () => ({
-      isSignedIn: true,
-      user: {
-        id: 'user_2NNEqL2nrIRdJ194ndJqAHwEfxC',
-        fullName: 'Charles Harris',
-      },
-    }),
-  }
+// Simulates a signed-in visitor: SignedIn renders its children, SignedOut
+// renders nothing. UserButton/SignInButton are Clerk's own client
+// components — stub them so the test doesn't need a real ClerkProvider.
+vi.mock('@clerk/nextjs', () => ({
+  SignedIn: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  SignedOut: () => null,
+  UserButton: () => <div data-testid="user-button" />,
+  SignInButton: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+}))
 
-  return mockedFunctions
-})
+test('Home', () => {
+  render(<Page />)
 
-test(`Home`, async () => {
-  render(await Page())
-  expect(screen.getByText('The best Journal app, period.')).toBeTruthy()
+  expect(
+    screen.getByText("Un journal intime, éclairé par l'IA.")
+  ).toBeTruthy()
+
+  // Signed-in visitors get a direct link back into the app instead of a
+  // sign-in prompt.
+  expect(screen.getByText('Retrouver mon journal')).toBeTruthy()
+  expect(screen.getAllByTestId('user-button').length).toBeGreaterThan(0)
 })

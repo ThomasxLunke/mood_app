@@ -11,21 +11,27 @@ export default function Editor(props: { entry: any }) {
   const [isLoading, setIsLoading] = useState(false)
   const [analysis, setAnalysis] = useState(entry.analysis)
 
-  const { mood, summary, color, subject, negative } = analysis
+  // A freshly created entry has no analysis yet: it's only generated once
+  // the user has actually written something and autosave has run.
+  const { mood, summary, color, subject } = analysis ?? {}
   const analysisData = [
-    { name: 'Résumé', value: summary },
-    { name: 'Sujet', value: subject },
-    { name: 'Mood', value: mood.toUpperCase() },
+    { name: 'Résumé', value: summary ?? 'En attente de votre premier texte...' },
+    { name: 'Sujet', value: subject ?? '—' },
+    { name: 'Mood', value: mood?.toUpperCase() ?? '—' },
   ]
 
   useAutosave({
     data: value,
     onSave: async (_value) => {
       setIsLoading(true)
-      const updated = await updatedEntry(entry.id, _value)
-      console.log(updated)
-      setAnalysis(updated.analysis)
-      setIsLoading(false)
+      try {
+        const updated = await updatedEntry(entry.id, _value)
+        if (updated) {
+          setAnalysis(updated.analysis)
+        }
+      } finally {
+        setIsLoading(false)
+      }
     },
   })
 

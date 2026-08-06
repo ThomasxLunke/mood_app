@@ -4,21 +4,29 @@ import { prisma } from '@/utils/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = async (req: NextRequest) => {
-  const { question } = await req.json()
-  const user = await getUserByClerkID()
+  try {
+    const { question } = await req.json()
+    const user = await getUserByClerkID()
 
-  const entries = await prisma.journalEntry.findMany({
-    where: {
-      userId: user.id,
-    },
-    select: {
-      id: true,
-      content: true,
-      createdAt: true,
-    },
-  })
+    const entries = await prisma.journalEntry.findMany({
+      where: {
+        userId: user.id,
+      },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
+    })
 
-  const answer = await qa(question, entries)
+    const answer = await qa(question, entries)
 
-  return NextResponse.json({ data: answer })
+    return NextResponse.json({ data: answer })
+  } catch (error) {
+    console.error('Failed to answer question:', error)
+    return NextResponse.json(
+      { error: "Impossible de répondre à la question pour le moment." },
+      { status: 500 }
+    )
+  }
 }
