@@ -1,9 +1,9 @@
 import CardSwap, { Card } from './CardSwap'
+import { Badge } from '@/components/ui/badge'
 
-// Illustrative entries, styled after the real EntryCard (mood-color band +
-// white/dark inner panel + badge) — cycling through a few examples makes
-// the "AI analyzes every entry" pitch more concrete than a single static
-// mock ever could.
+// Illustrative entries, styled after the app's actual /journal card design
+// (small mood dot + badge on a neutral surface, not a full-bleed color fill)
+// so the hero preview reads as "this is really what the product looks like".
 const EXAMPLE_ENTRIES = [
   {
     date: '06/08/2026 · 09:14',
@@ -30,35 +30,33 @@ const EXAMPLE_ENTRIES = [
 
 export function HeroPreview() {
   return (
-    <div className="relative mx-auto h-[300px] w-full max-w-sm">
+    <div className="relative h-[420px] w-full max-w-xl">
       <CardSwap
-        width={300}
-        height={190}
-        cardDistance={36}
-        verticalDistance={32}
-        delay={4500}
-        // pauseOnHover — désactivé volontairement : le carrousel doit
-        // tourner en continu, sans que le survol puisse l'arrêter.
-        skewAmount={4}
-        easing="elastic"
+        width={380}
+        height={230}
+        cardDistance={55}
+        verticalDistance={60}
+        delay={4000}
+        pauseOnHover
       >
         {EXAMPLE_ENTRIES.map((entry) => (
           <Card key={entry.date}>
-            <div
-              className="flex h-full flex-col"
-              style={{ backgroundColor: entry.color }}
-            >
-              <div className="px-4 pt-3 text-xs font-semibold">
-                {entry.date}
-              </div>
-              <div className="m-2 flex flex-1 flex-col justify-between rounded-2xl bg-card p-4">
-                <p className="text-sm leading-snug text-muted-foreground">
-                  {entry.summary}
-                </p>
-                <span className="mt-3 inline-flex w-fit items-center rounded-full bg-secondary px-2.5 py-1 text-[10px] font-bold tracking-wide text-secondary-foreground">
-                  {entry.mood}
+            <div className="flex h-full flex-col p-5">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <span className="text-xs font-medium text-muted-foreground">
+                  {entry.date}
                 </span>
+                <Badge variant="secondary" className="gap-1.5">
+                  <span
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ backgroundColor: entry.color }}
+                  />
+                  {entry.mood}
+                </Badge>
               </div>
+              <p className="text-sm leading-relaxed text-foreground/90">
+                {entry.summary}
+              </p>
             </div>
           </Card>
         ))}

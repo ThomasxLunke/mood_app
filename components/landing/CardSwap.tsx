@@ -31,14 +31,19 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   customClass?: string
 }
 
-// Themed to this app's shadcn tokens (bg-card/border, not the reactbits
-// demo's hardcoded black/white) so it works in both light and dark mode.
+// Themed to this app's shadcn tokens, but as frosted glass rather than a
+// flat bg-card fill: on the landing hero, --card is literally identical to
+// --background (both light and dark), and the page has no solid backdrop
+// behind it (LiquidEther runs fixed behind everything) — so a flat card
+// vanished into the page. Translucency + blur lets the fluid sim's color
+// show through softened, while the blur/shadow/rim-light still separates
+// the card from the page far more reliably than a flat fill would.
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ customClass, ...rest }, ref) => (
     <div
       ref={ref}
       {...rest}
-      className={`absolute top-1/2 left-1/2 overflow-hidden rounded-3xl border bg-card text-card-foreground shadow-2xl [transform-style:preserve-3d] [will-change:transform] [backface-visibility:hidden] ${customClass ?? ''} ${rest.className ?? ''}`.trim()}
+      className={`absolute top-1/2 left-1/2 overflow-hidden rounded-3xl border bg-card/60 text-card-foreground shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35)] backdrop-blur-xl ring-1 ring-inset ring-white/10 [transform-style:preserve-3d] [will-change:transform] [backface-visibility:hidden] ${customClass ?? ''} ${rest.className ?? ''}`.trim()}
     />
   )
 )
