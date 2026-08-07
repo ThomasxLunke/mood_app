@@ -37,7 +37,6 @@ export function HeroPreview() {
         cardDistance={55}
         verticalDistance={60}
         delay={4000}
-        pauseOnHover
       >
         {EXAMPLE_ENTRIES.map((entry) => (
           <Card key={entry.date}>
